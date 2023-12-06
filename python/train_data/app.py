@@ -1,5 +1,5 @@
 import json
-from flask import Flask, jsonify, request
+from flask import request
 
 class SeatNotInTrain(Exception):
     pass
@@ -44,28 +44,5 @@ class TrainDataManager:
             train["seats"][seat]["booking_reference"] = booking_reference
 
         return train
-    
-# decorator for ensuring that a train exists
-def ensure_train_exists(train_data_manager):
-    def decorator(f):
-        def wrapper(*args, **kwargs):
-            train_id = kwargs.get("train_id")
-            if not train_id:
-                return "Missing 'train_id' in path", 400
-            if not train_data_manager.data_for_train(train_id):
-                return f"No train with id '{train_id}'", 404
-            return f(*args, **kwargs)
-        return wrapper
-    return decorator
 
-def ensure_field_in_body(fieldname):
-    def decorator(f):
-        def wrapper(*args, **kwargs):
-            payload = request.json
-            if not payload:
-                return "Missing body", 400
-            if not fieldname in payload:
-                return f"Missing '{fieldname}' in body", 400
-            return f(*args, **kwargs)
-        return wrapper
     

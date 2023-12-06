@@ -1,6 +1,3 @@
-from flask import Flask
-
-
 class BookingReference:
     def __init__(self):
         self._count = 123456789
