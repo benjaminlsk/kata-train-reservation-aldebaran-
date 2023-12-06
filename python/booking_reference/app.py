@@ -11,19 +11,8 @@ class BookingReference:
     def value(self):
         return str(hex(self._count))[2:]
 
-
-def create_app():
-    booking_reference = BookingReference()
-    app = Flask("booking_reference")
-
-    @app.get("/booking_reference")
-    def get_booking_reference():
-        booking_reference.increment()
-        return booking_reference.value()
-
-    return app
+    def get_booking_reference(self):
+        self.increment()
+        return self.value()
 
 
-if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True, port=8082)
