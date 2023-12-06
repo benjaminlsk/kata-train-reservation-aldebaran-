@@ -1,4 +1,4 @@
-from httpx import Client
+from requests import Session
 import json
 
 
@@ -14,11 +14,11 @@ def create_app():
         seat_count = payload["count"]
         train_id = payload["train_id"]
 
-        client = Client()
+        session = Session()
 
-        booking_reference = client.get("http://localhost:8082/booking_reference").text
+        booking_reference = session.get("http://localhost:8082/booking_reference").text
 
-        train_data = client.get(
+        train_data = session.get(
             f"http://localhost:8081/data_for_train/" + train_id
         ).json()
         available_seats = (
@@ -43,7 +43,7 @@ def create_app():
             "booking_reference": reservation["booking_reference"],
         }
 
-        response = client.post(
+        response = session.post(
             "http://localhost:8081/reserve",
             json=reservation_payload,
         )
